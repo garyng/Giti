@@ -35,10 +35,9 @@ jobs:
       id: gitversion
       uses: gittools/actions/gitversion/execute@v0.9.3
     - name: Zip
-      uses: TheDoctor0/zip-release@v0.3.0
-      with:
-        filename: ./artifacts/giti-${{ steps.gitversion.outputs.fullSemVer }}.zip
-        directory: ./dist
+      run: |
+        Compress-Archive -Path ./dist -DestinationPath ./artifacts/giti-${{ steps.gitversion.outputs.fullSemVer }}.zip
+      shell: pwsh
     - name: Release
       id: release
       uses: actions/create-release@v1.1.1
