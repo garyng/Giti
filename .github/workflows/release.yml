@@ -28,12 +28,17 @@ jobs:
     - name: Install dependencies
       run: dotnet restore
       working-directory: ./src
-    - name: Build
-      run: dotnet build --configuration Release --no-restore
+    - name: Publish
+      run: dotnet publish -o "../dist" -c Release --self-contained false --no-restore
       working-directory: ./src
     - name: Versioning
       id: gitversion
       uses: gittools/actions/gitversion/execute@v0.9.3
+    - name: Zip
+      uses: TheDoctor0/zip-release@v0.3.0
+      with:
+        filename: "giti-${{ steps.gitversion.outputs.fullSemVer }}.zip"
+        directory: ./dist
     - name: Release
       uses: actions/create-release@v1.1.1
       env:
@@ -41,4 +46,8 @@ jobs:
       with:
         tag_name: ${{ steps.gitversion.outputs.fullSemVer }}
         release_name: ${{ steps.gitversion.outputs.fullSemVer }}
-        draft: true  
+        draft: true
+    - name: Upload
+      uses: actions/upload-artifact@v2
+      with:
+        path: ./dist
