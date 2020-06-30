@@ -37,7 +37,7 @@ jobs:
     - name: Zip
       run: |
         md -Force ./artifacts/
-        Compress-Archive -Path ./dist -DestinationPath ./artifacts/giti-${{ steps.gitversion.outputs.fullSemVer }}.zip
+        Compress-Archive -Path ./dist/* -DestinationPath ./artifacts/giti-${{ steps.gitversion.outputs.fullSemVer }}.zip
       shell: pwsh
     - name: Release
       id: release
