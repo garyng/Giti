@@ -36,6 +36,7 @@ jobs:
       uses: gittools/actions/gitversion/execute@v0.9.3
     - name: Zip
       run: |
+        md -Force ./artifacts/
         Compress-Archive -Path ./dist -DestinationPath ./artifacts/giti-${{ steps.gitversion.outputs.fullSemVer }}.zip
       shell: pwsh
     - name: Release
