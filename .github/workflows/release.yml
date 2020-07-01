@@ -40,14 +40,18 @@ jobs:
     - name: Versioning
       id: gitversion
       uses: gittools/actions/gitversion/execute@v0.9.3
-    - name: Zip
+    - name: Create directory
       run: |
         md -Force ${{ env.artifacts-dir }}
+      shell: pwsh
+    - name: Zip
+      run: |
         Compress-Archive -Path ${{ env.out-dir }}/* -DestinationPath ${{ env.artifacts-dir }}giti-${{ steps.gitversion.outputs.fullSemVer }}.zip
       shell: pwsh
     - name: Package
       run: |
-        choco pack --version ${{ steps.gitversion.outputs.fullSemVer }}
+        choco pack --version ${{ steps.gitversion.outputs.semVer }}
+        Copy-Item *.nupkg "../${{ env.artifacts-dir }"
       working-directory: ${{ env.choco-dir }}
       shell: pwsh
     - name: Release
