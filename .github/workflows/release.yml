@@ -7,6 +7,8 @@ on:
     branches: [ master ]
 
 env:
+  choco-dir: ./choco/
+  src-dir: ./src/
   out-dir: ./out/
   artifacts-dir: ./artifacts/
 
@@ -31,10 +33,10 @@ jobs:
           versionSpec: '5.2.x'
     - name: Install dependencies
       run: dotnet restore
-      working-directory: ./src
+      working-directory: ${{ env.src-dir }}
     - name: Publish
       run: dotnet publish -o "../${{ env.out-dir }}" -c Release --self-contained false --no-restore
-      working-directory: ./src
+      working-directory: ${{ env.src-dir }}
     - name: Versioning
       id: gitversion
       uses: gittools/actions/gitversion/execute@v0.9.3
@@ -42,6 +44,11 @@ jobs:
       run: |
         md -Force ${{ env.artifacts-dir }}
         Compress-Archive -Path ${{ env.out-dir }}/* -DestinationPath ${{ env.artifacts-dir }}giti-${{ steps.gitversion.outputs.fullSemVer }}.zip
+      shell: pwsh
+    - name: Package
+      run: |
+        choco pack --version ${{ steps.gitversion.outputs.fullSemVer }}
+      working-directory: ${{ env.choco-dir }}
       shell: pwsh
     - name: Release
       id: release
@@ -52,8 +59,7 @@ jobs:
         tag_name: ${{ steps.gitversion.outputs.fullSemVer }}
         release_name: ${{ steps.gitversion.outputs.fullSemVer }}
         draft: true
-    - name: Upload
-      id: upload
+    - name: Upload Github
       uses: actions/upload-release-asset@v1.0.2
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -62,3 +68,9 @@ jobs:
         asset_path: ${{ env.artifacts-dir }}giti-${{ steps.gitversion.outputs.fullSemVer }}.zip
         asset_name: giti-${{ steps.gitversion.outputs.fullSemVer }}.zip
         asset_content_type: application/zip
+    - name: Upload Chocolatey
+      run: |
+        choco apikey -k ${{ secrets.CHOCO_APIKEY }} -s https://push.chocolatey.org/
+        choco push -s https://push.chocolatey.org/
+      shell: pwsh
+      working-directory: ${{ env.choco-dir }}
