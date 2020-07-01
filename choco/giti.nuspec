@@ -1,0 +1,26 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2015/06/nuspec.xsd">
+  <metadata>
+    <id>giti</id>
+    <version>$version$</version>
+    <packageSourceUrl>https://github.com/garyng/Giti</packageSourceUrl>
+    <owners>Gary Ng</owners>
+    <title>Giti</title>
+    <authors>Gary Ng</authors>
+    <projectUrl>https://github.com/garyng/Giti</projectUrl>
+    <!--<iconUrl>http://cdn.rawgit.com/__REPLACE_YOUR_REPO__/master/icons/giti.png</iconUrl>-->
+    <copyright>Gary Ng</copyright>
+    <!-- If there is a license Url available, it is required for the community feed -->
+    <!-- <licenseUrl>Software License Location __REMOVE_OR_FILL_OUT__</licenseUrl> -->
+    <docsUrl>https://github.com/garyng/Giti/wiki</docsUrl>
+    <bugTrackerUrl>https://github.com/garyng/Giti/issues</bugTrackerUrl>
+    <tags>giti</tags>
+    <summary>A simple too for customizing git commit message.</summary>
+    <description>A simple too for customizing git commit message.</description>
+  </metadata>
+  <files>
+    <file src="..\artifacts\**" target="tools" />
+    <file src="..\LICENSE.txt" target="tools" />
+    <file src="VERIFICATION.txt" target="tools" />
+  </files>
+</package>

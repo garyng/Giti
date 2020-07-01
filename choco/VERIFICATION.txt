@@ -1,0 +1,7 @@
+﻿To verify the binaries:
+
+- Clone the repo `https://github.com/garyng/Giti`
+- Inside the `./src`, run
+    - `dotnet restore`
+    - `dotnet publish -o ../out/ -c Release --self-contained false --no-restore`
+- Check the checksum of the built files inside `./out`
