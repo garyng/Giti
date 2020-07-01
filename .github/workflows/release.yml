@@ -60,8 +60,8 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         draft: true
-        files: "*.*"
-        name: ${{ steps.gitversion.outputs.fullSemVer }}
+        files: "${{ env.choco-dir }}/*.*"
+        name: ${{ steps.gitversion.outputs.fullSemVer }}  
     - name: Release Chocolatey
       # if: startsWith(github.ref, 'refs/tags/')
       run: |
