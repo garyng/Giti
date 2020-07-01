@@ -19,7 +19,7 @@
     <description>A simple too for customizing git commit message.</description>
   </metadata>
   <files>
-    <file src="..\artifacts\**" target="tools" />
+    <file src="..\out\**" target="tools" />
     <file src="..\LICENSE.txt" target="tools" />
     <file src="VERIFICATION.txt" target="tools" />
   </files>
