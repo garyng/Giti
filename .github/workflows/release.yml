@@ -33,15 +33,15 @@ jobs:
       run: dotnet restore
       working-directory: ./src
     - name: Publish
-      run: dotnet publish -o "../${{ out-dir }}" -c Release --self-contained false --no-restore
+      run: dotnet publish -o "../${{ env.out-dir }}" -c Release --self-contained false --no-restore
       working-directory: ./src
     - name: Versioning
       id: gitversion
       uses: gittools/actions/gitversion/execute@v0.9.3
     - name: Zip
       run: |
-        md -Force ${{ artifacts-dir }}
-        Compress-Archive -Path ${{ out-dir }}/* -DestinationPath ${{ artifacts-dir }}giti-${{ steps.gitversion.outputs.fullSemVer }}.zip
+        md -Force ${{ env.artifacts-dir }}
+        Compress-Archive -Path ${{ env.out-dir }}/* -DestinationPath ${{ env.artifacts-dir }}giti-${{ steps.gitversion.outputs.fullSemVer }}.zip
       shell: pwsh
     - name: Release
       id: release
@@ -59,6 +59,6 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         upload_url: ${{ steps.release.outputs.upload_url }}
-        asset_path: ${{ artifacts-dir }}giti-${{ steps.gitversion.outputs.fullSemVer }}.zip
+        asset_path: ${{ env.artifacts-dir }}giti-${{ steps.gitversion.outputs.fullSemVer }}.zip
         asset_name: giti-${{ steps.gitversion.outputs.fullSemVer }}.zip
         asset_content_type: application/zip
