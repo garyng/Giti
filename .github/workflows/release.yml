@@ -51,7 +51,7 @@ jobs:
     - name: Package
       run: |
         choco pack --version ${{ steps.gitversion.outputs.semVer }}
-        Copy-Item *.nupkg "../${{ env.artifacts-dir }"
+        Copy-Item *.nupkg "../${{ env.artifacts-dir }}"
       working-directory: ${{ env.choco-dir }}
       shell: pwsh
     - name: Release
