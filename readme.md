@@ -61,5 +61,5 @@ This will extract ticket number from the `HEAD`'s branch name, convert it to upp
 
 ![](docs/extract-ticket.gif)
 
-[choco]: [https://chocolatey.org/packages/giti/]
-[lefthook]: [https://github.com/Arkweid/lefthook]
+[choco]: https://chocolatey.org/packages/giti/
+[lefthook]: https://github.com/Arkweid/lefthook
