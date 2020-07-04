@@ -16,7 +16,7 @@
     <tags>giti</tags>
     <summary>A simple too for customizing git commit message.</summary>
     <description>A simple too for customizing git commit message.</description>
-    <reloeaseNotes>https://github.com/garyng/Giti/releases</reloeaseNotes>
+    <releaseNotes>https://github.com/garyng/Giti/releases</releaseNotes>
   </metadata>
   <files>
     <file src="..\out\**" target="tools" />
