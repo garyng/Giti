@@ -1,10 +1,6 @@
 name: Release
 
-on:
-  push:
-    branches: [ master ]
-  pull_request:
-    branches: [ master ]
+on: push
 
 env:
   choco-dir: ./choco/
@@ -69,7 +65,7 @@ jobs:
         name: ${{ steps.gitversion.outputs.fullSemVer }}
         tag_name: ${{ steps.gitversion.outputs.fullSemVer }}
     - name: Release Chocolatey
-      if: startsWith(github.ref, 'refs/tags/')
+      if: github.ref == 'refs/heads/master'
       run: |
         choco apikey -k ${{ secrets.CHOCO_APIKEY }} -s https://push.chocolatey.org/
         choco push -s https://push.chocolatey.org/
