@@ -10,13 +10,13 @@
     <projectUrl>https://github.com/garyng/Giti</projectUrl>
     <!--<iconUrl>http://cdn.rawgit.com/__REPLACE_YOUR_REPO__/master/icons/giti.png</iconUrl>-->
     <copyright>Gary Ng</copyright>
-    <!-- If there is a license Url available, it is required for the community feed -->
-    <!-- <licenseUrl>Software License Location __REMOVE_OR_FILL_OUT__</licenseUrl> -->
+    <licenseUrl>https://github.com/garyng/Giti/blob/master/LICENSE.txt</licenseUrl>
     <docsUrl>https://github.com/garyng/Giti/wiki</docsUrl>
     <bugTrackerUrl>https://github.com/garyng/Giti/issues</bugTrackerUrl>
     <tags>giti</tags>
     <summary>A simple too for customizing git commit message.</summary>
     <description>A simple too for customizing git commit message.</description>
+    <reloeaseNotes>https://github.com/garyng/Giti/releases</reloeaseNotes>
   </metadata>
   <files>
     <file src="..\out\**" target="tools" />
