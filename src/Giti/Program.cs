@@ -31,6 +31,9 @@ namespace Giti
 		[Option('t', "template", Required = true,
 			HelpText = "The template used for constructing the commit message. Uses scriban templating engine.")]
 		public string Template { get; set; }
+
+		[Option('k', "skipPattern", Default = null, HelpText = "Skip replacement if this regex pattern matches the original git message. Default to use 'pattern'.")]
+		public string SkipPattern { get; set; }
 	}
 
 	class Program
@@ -65,6 +68,7 @@ namespace Giti
 				SourceTypes.GitHeadCanonicalName => repo.Head.CanonicalName,
 				_ => throw new ArgumentOutOfRangeException()
 			};
+
 			var match = Regex.Match(source, option.Pattern).Value;
 			if (string.IsNullOrEmpty(match))
 			{
@@ -75,6 +79,15 @@ namespace Giti
 			Ok($"Matched '{match}' from '{source}'");
 
 			var originalMessage = await File.ReadAllTextAsync(option.CommitMessageFile);
+
+			var skipPattern = string.IsNullOrEmpty(option.SkipPattern) ? option.Pattern : option.SkipPattern;
+			var matchInMessage = Regex.Match(originalMessage, skipPattern).Value;
+			if (!string.IsNullOrEmpty(matchInMessage))
+			{
+				Warn($"Pattern '{skipPattern}' matches the original message. Skipping.");
+				return;
+			}
+
 			var template = Template.Parse(option.Template);
 			var finalMessage = template.Render(new
 			{
