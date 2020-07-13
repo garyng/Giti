@@ -97,9 +97,9 @@ namespace Giti
 				}
 			}
 
-			void Warn(string text) => console.Write(text, Colors.txtWarning);
-			void Ok(string text) => console.Write(text, Colors.txtSuccess);
-			void Error(string text) => console.Write(text, Colors.txtDanger);
+			void Warn(string text) => console.WriteLine(text, Colors.txtWarning);
+			void Ok(string text) => console.WriteLine(text, Colors.txtSuccess);
+			void Error(string text) => console.WriteLine(text, Colors.txtDanger);
 		}
 	}
 }
