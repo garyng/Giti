@@ -22,13 +22,13 @@ namespace Giti
 		[Value(0, HelpText = "Path to the COMMIT_EDITMSG file (provided by git).")]
 		public string CommitMessageFile { get; set; }
 
-		[Option('t', "sourceType", Default = SourceTypes.GitHeadFriendlyName, HelpText = "The source for extraction.")]
+		[Option('s', "sourceType", Default = SourceTypes.GitHeadFriendlyName, HelpText = "The source for extraction.")]
 		public SourceTypes SourceType { get; set; }
 
 		[Option('p', "pattern", Required = true, HelpText = "The regex used for extraction from the source.")]
 		public string Pattern { get; set; }
 
-		[Option('r', "template", Required = true,
+		[Option('t', "template", Required = true,
 			HelpText = "The template used for constructing the commit message. Uses scriban templating engine.")]
 		public string Template { get; set; }
 	}
