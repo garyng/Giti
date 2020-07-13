@@ -32,7 +32,7 @@ namespace Giti
 			HelpText = "The template used for constructing the commit message. Uses scriban templating engine.")]
 		public string Template { get; set; }
 
-		[Option('k', "skipPattern", Default = null, HelpText = "Skip replacement if this regex pattern matches the original git message. Default to use 'pattern'.")]
+		[Option('k', "skipPattern", Default = null, HelpText = "Skip replacement if this regex pattern matches the original commit message. Default to use 'pattern'.")]
 		public string SkipPattern { get; set; }
 	}
 
