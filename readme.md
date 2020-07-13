@@ -33,19 +33,23 @@ A simple tool for customizing git commit message.
 ```console
 $ giti --help
 
-  -t, --sourceType    (Default: GitHeadFriendlyName) The source for extraction.
-                      Valid values: GitHeadFriendlyName, GitHeadCanonicalName
+  -s, --sourceType     (Default: GitHeadFriendlyName) The source for extraction.
+                       Valid values: GitHeadFriendlyName, GitHeadCanonicalName
 
-  -p, --pattern       Required. The regex used for extraction from the source.
+  -p, --pattern        Required. The regex used for extraction from the source.
 
-  -r, --template      Required. The template used for constructing the commit
-                      message. Uses scriban templating engine.
+  -t, --template       Required. The template used for constructing the commit
+                       message. Uses scriban templating engine.
 
-  --help              Display this help screen.
+  -k, --skipPattern    Skip replacement if this regex pattern matches the
+                       original commit message. Default to use 'pattern'.
 
-  --version           Display version information.
+  --help               Display this help screen.
 
-  value pos. 0        Path to the COMMIT_EDITMSG file (provided by git).
+  --version            Display version information.
+
+  value pos. 0         Path to the COMMIT_EDITMSG file (provided by git).
+
 ```
 
 ## Demo
@@ -53,11 +57,10 @@ $ giti --help
 Configuration:
 
 ```
-@giti "%*" -t "GitHeadFriendlyName" -p "[a-zA-Z]+-\d+" -r "{{ match | string.upcase }} {{ message }}"
+@giti "%*" -s "GitHeadFriendlyName" -p "[a-zA-Z]+-\d+" -k "^[a-zA-Z]+-\d+" -t "{{ match | string.upcase }} {{ message }}"
 ```
 
-This will extract ticket number from the `HEAD`'s branch name, convert it to uppercase, and prepend it to the final commit message.
-
+This will extract ticket number from the `HEAD`'s branch name, convert it to uppercase, and prepend it to the final commit message. It will skip the replacement process if a ticket number is found in the original commit message.
 
 ![](docs/extract-ticket.gif)
 
