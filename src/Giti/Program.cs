@@ -3,8 +3,6 @@ using System;
 using System.IO;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
-using Colorify;
-using Colorify.UI;
 using CommandLine;
 using CommandLine.Text;
 using Scriban;
@@ -53,8 +51,6 @@ namespace Giti
 
 		public static async Task Run(Options option)
 		{
-			var console = new Format(new ThemeDark());
-
 			using var repo = TryCreateRepo();
 			if (repo is null)
 			{
@@ -110,9 +106,9 @@ namespace Giti
 				}
 			}
 
-			void Warn(string text) => console.WriteLine(text, Colors.txtWarning);
-			void Ok(string text) => console.WriteLine(text, Colors.txtSuccess);
-			void Error(string text) => console.WriteLine(text, Colors.txtDanger);
+			void Warn(string text) => Console.WriteLine($"[WARN] {text}");
+			void Ok(string text) => Console.WriteLine($"[OK] {text}");
+			void Error(string text) => Console.WriteLine($"[ERROR] {text}");
 		}
 	}
 }
