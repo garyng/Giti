@@ -1,10 +1,10 @@
 name: Release
-
 on: push
 
 env:
-  choco-dir: ./choco/
+  archive-name: Giti
   src-dir: ./src/
+  target-project: ./Giti/Giti.csproj
   out-dir: ./out/
   artifacts-dir: ./artifacts/
 
@@ -16,56 +16,50 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-
-      - name: Fetch all history for all tags and branches
-        run: |
-          git config remote.origin.url https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}
-          git fetch --prune --unshallow
-
+        with:
+          submodules: true
+          fetch-depth: 0
+      
       - name: Setup .NET Core
         uses: actions/setup-dotnet@v1
         with:
           dotnet-version: 3.1.x
 
       - name: Install GitVersion
-        uses: gittools/actions/gitversion/setup@v0.9.3
+        uses: gittools/actions/gitversion/setup@v0.9.5
         with:
-          versionSpec: "5.2.x"
+          versionSpec: "5.x"
 
       - name: Install dependencies
         run: dotnet restore
         working-directory: ${{ env.src-dir }}
 
       - name: Publish
-        run: dotnet publish -o "../${{ env.out-dir }}" -c Release --self-contained false --no-restore
+        run: dotnet publish -o "../${{ env.out-dir }}" -c Release --self-contained false --no-restore ${{ env.target-project }}
         working-directory: ${{ env.src-dir }}
 
       - name: Versioning
         id: gitversion
-        uses: gittools/actions/gitversion/execute@v0.9.3
-
-      - name: Replace zip link for VERFICATION.TXT
-        run: |
-          $content = Get-Content ${{ env.choco-dir }}/VERIFICATION.txt
-          $content = $content.Replace("{{github-zip-url}}", "https://github.com/garyng/Giti/releases/tag/${{ steps.gitversion.outputs.fullSemVer }}")
-          $content | Set-Content ${{ env.choco-dir }}/VERIFICATION.txt
-        shell: pwsh
+        uses: gittools/actions/gitversion/execute@v0.9.5
 
       - name: Create directory
         run: |
           md -Force ${{ env.artifacts-dir }}
         shell: pwsh
 
+      - name: Set variable
+        id: vars
+        run: echo "::set-output name=filepath::${{ env.artifacts-dir }}${{ env.archive-name }}-${{ steps.gitversion.outputs.fullSemVer }}.zip" 
+  
       - name: Zip
         run: |
-          Compress-Archive -Path ${{ env.out-dir }}/* -DestinationPath ${{ env.artifacts-dir }}giti-${{ steps.gitversion.outputs.fullSemVer }}.zip
+          Compress-Archive -Path ${{ env.out-dir }}/* -DestinationPath ${{ steps.vars.outputs.filepath }}
         shell: pwsh
 
-      - name: Package
+      - name: Hash
         run: |
-          choco pack --version ${{ steps.gitversion.outputs.majorMinorPatch }}
-          Copy-Item *.nupkg "../${{ env.artifacts-dir }}"
-        working-directory: ${{ env.choco-dir }}
+          $hash = $(Get-FileHash ${{ steps.vars.outputs.filepath }}).Hash
+          $hash | Set-Content ${{ steps.vars.outputs.filepath }}.sha256
         shell: pwsh
 
       - name: Upload Artifacts
@@ -82,11 +76,3 @@ jobs:
           files: "${{ env.artifacts-dir }}/*"
           name: ${{ steps.gitversion.outputs.fullSemVer }}
           tag_name: ${{ steps.gitversion.outputs.fullSemVer }}
-
-      - name: Release Chocolatey
-        if: github.ref == 'refs/heads/master'
-        run: |
-          choco apikey -k ${{ secrets.CHOCO_APIKEY }} -s https://push.chocolatey.org/
-          choco push -s https://push.chocolatey.org/
-        shell: pwsh
-        working-directory: ${{ env.choco-dir }}

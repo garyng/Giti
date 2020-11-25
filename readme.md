@@ -4,7 +4,8 @@ A simple tool for customizing git commit message.
 
 ## Installation
 
-1. [`choco install giti`][choco]
+1. Follow [`scoop-garyng`][scoop-garyng] to setup `scoop`
+1. Install `Giti` with `scoop install Giti`
 1. Install [`lefthook`][lefthook]
 1. Navigate to a git repo
 1. Run `lefthook install`
@@ -66,3 +67,4 @@ This will extract ticket number from the `HEAD`'s branch name, convert it to upp
 
 [choco]: https://chocolatey.org/packages/giti/
 [lefthook]: https://github.com/Arkweid/lefthook
+[scoop-garyng]: https://github.com/garyng/scoop-garyng/
