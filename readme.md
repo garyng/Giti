@@ -4,7 +4,7 @@ A simple tool for customizing git commit message.
 
 ## Installation
 
-1. [`choco install giti`][choco] (install with `--version=xxx` while the package is waiting for approval)
+1. [`choco install giti`][choco]
 1. Install [`lefthook`][lefthook]
 1. Navigate to a git repo
 1. Run `lefthook install`
